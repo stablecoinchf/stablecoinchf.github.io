@@ -3,8 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="main.css">
+    <script type="text/javascript" src="./node_modules/web3/dist/web3.min.js"></script>
+
+	<script type="text/javascript" src="./stablecoin.js"></script>
+	
+    <script type="text/javascript">
+
+        var account, sc ;
+
+        window.addEventListener('load', function () {
+        // Wait for loading completion to avoid race conditions with web3 injection timing.    
+		if (window.ethereum) {
+			window.web3 = new Web3(window.ethereum);
+            try {
+            // Request account access if needed
+            await window.ethereum.enable();
+            } catch (error) {
+                console.error(error);
+            }
+            getInfos();
+		} 
+        // Legacy dapp browsers...
+        else if (window.web3) {
+         // Use Mist/MetaMask's provider.
+        const web3 = window.web3;
+        console.log('Injected web3 detected.');
+        getInfos();
+        } 
+        // Fallback to localhost; use dev console port by default...
+        else {
+               	 	console.log('No Web3 Detected... using HTTP Provider')
+              	  	window.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));         
+                    getInfos();
+		}	
+        })
+
+        async function getInfos() {
+            var err,accounts ;
+
+            if (!accounts) {
+                accounts = await web3.eth.getAccounts();
+            } 
+
+            if (!account) {
+                account = accounts[0];
+            }
+
+            var htmlAccounts = "";
+            for (var i = 0; i < accounts.length; i++) {
+                htmlAccounts = htmlAccounts + "<br>" + accounts[i]
+            }
+
+            // document.getElementById("currentAccountInput").value = account;
+            document.getElementById("currentAccount").innerHTML = account;
+            document.getElementById("accounts").innerHTML = htmlAccounts;
+            document.getElementById("contractAddress").innerHTML = contractAddress;
+
+            document.getElementById("totalSupplyCoin").innerHTML = totalSupplyCoin + " BCHF";
+
+            if (!sc) {
+                sc = await new web3.eth.Contract(contractAbi, contractAddress);
+            }   
+
+            try { 
+			    var symbol = await sc.methods.symbol().call();
+                document.getElementById("symbol").innerHTML = symbol;
+            } catch (err) {
+                document.getElementById("symbol").innerHTML = err;
+            }
+
+            try { 
+			    var name = await sc.methods.name().call();
+                document.getElementById("name").innerHTML = name;
+            } catch (err) {
+                document.getElementById("name").innerHTML = err;
+            }
+
+
+            try { 
+			    var contractBalanceETH = await sc.methods.getBalanceETH().call();
+                contractBalanceETH = web3.utils.fromWei(contractBalanceETH, 'ether');
+                document.getElementById("contractBalanceETH").innerHTML = contractBalanceETH + " ETH";
+            } catch (err) {
+                document.getElementById("contractBalanceETH").innerHTML = err;
+            }
+
+            try { 
+			    var totalSupplyCoin = await sc.methods.totalSupply().call();
+                // totalSupplyCoin = web3.utils.fromWei(totalSupplyCoin, 'ether');
+                document.getElementById("totalSupplyCoin").innerHTML = totalSupplyCoin + " BCHF";
+            } catch (err) {
+                document.getElementById("totalSupplyCoin").innerHTML = err;
+            }
+
+            try { 
+			    var totalSupplyShares = await sc.methods.totalNoOfShares().call();
+                // totalSupplyShares = web3.utils.fromWei(totalSupplyShares, 'ether');
+                document.getElementById("totalSupplyShares").innerHTML = totalSupplyShares + " BCHFS";
+            } catch (err) {
+                document.getElementById("totalSupplyShares").innerHTML = err;
+            }
+
+            try { 
+			    var priceETHCHF = await sc.methods.getPrice_ETH_CHF().call();
+                priceETHCHF = priceETHCHF / 100000000;
+                document.getElementById("priceETHCHF").innerHTML = priceETHCHF + " CHF";
+            } catch (err) {
+                document.getElementById("priceETHCHF").innerHTML = err;
+            }
+
+            try { 
+			    var priceCHFETH = await sc.methods.getPrice_CHF_ETH().call();
+                priceCHFETH = priceCHFETH / 100000000;
+                document.getElementById("priceCHFETH").innerHTML = priceCHFETH + " ETH";
+            } catch (err) {
+                document.getElementById("priceCHFETH").innerHTML = err;
+            }
+
+            try { 
+			    var priceBCHF = await sc.methods.scPrice().call();
+                priceBCHF = priceBCHF / 100000000;
+                document.getElementById("priceBCHF").innerHTML = priceBCHF + " % (of CHF)";
+            } catch (err) {
+                document.getElementById("priceBCHF").innerHTML = err;
+            }
+
+            try {
+			    var owner = await sc.methods.owner().call();
+                var isOwner = false;
+                if (account.localeCompare(owner)== 0){
+                    isOwner = true;
+                };
+                document.getElementById("owner").innerHTML = isOwner;
+            } catch (err) {
+                document.getElementById("owner").innerHTML = err;
+            }
+
+            try {
+			    var minter = await sc.methods.isMinter(account).call();
+                document.getElementById("minter").innerHTML = minter;
+            } catch (err) {
+                document.getElementById("minter").innerHTML = err;
+            }
+
+            try {
+			    var burner = await sc.methods.isBurner(account).call();
+                document.getElementById("burner").innerHTML = minter;
+            } catch (err) {
+                document.getElementById("burner").innerHTML = err;
+            }
+
+            try {
+                var error,wei ;
+                await web3.eth.getBalance(account, function (error, wei) {
+                    if (!error) {
+                        var balance = web3.utils.fromWei(wei, 'ether');
+                        document.getElementById("balanceETH").innerHTML = balance + " ETH";
+                    }
+                });
+            } catch (err) {
+                document.getElementById("balanceETH").innerHTML = err;
+            }
+
+            try { 
+			    var balanceBitCHF = await sc.methods.balanceOf(account).call();
+                document.getElementById("balanceBCHF").innerHTML = balanceBitCHF + " BCHF";
+            } catch (err) {
+                document.getElementById("balanceBCHF").innerHTML = err;
+            }
+           
+            try {
+			    var balanceBitCHFShares = await sc.methods.getShareAmount(account).call();
+                document.getElementById("balanceBCHFShares").innerHTML = balanceBitCHFShares + " BCHFS";
+            } catch (err) {
+                document.getElementById("balanceBCHFShares").innerHTML = err;
+            }
+        }
+
+        async function updateAddress() {
+            account = document.getElementById("currentAccountInput").value;
+            getInfos();
+        }
+
+        async function buyShares() {
+            document.getElementById("actionErrors").innerHTML = "";
+            if (!sc) {
+                sc = await new web3.eth.Contract(contractAbi, contractAddress);
+            }
+            var noOfShares = document.getElementById("numberOfShares").value;
+            var priceCHFETH = await sc.methods.getPrice_CHF_ETH().call();
+            var transactionPrice = priceCHFETH * noOfShares;
+            try {
+                await sc.methods.buyShare(noOfShares).send({ from: account, gas: 3000000, value: transactionPrice});
+			} catch (err) {
+				document.getElementById("actionErrors").innerHTML = err;
+			}
+            getInfos();
+        }
+
+    </script>
 </head>
 <body>
-    <h1>Bit CHF - Swiss Stablecoin</h1>
+    <h1><span id="symbol"></span> <span id="name"></span></h1>    
+
+    <table>
+        <tr>
+            <th>Contract info</th>      
+            <th>Acount info</th>
+            <th>Actions</th> 
+        </tr>
+        <tr valign="top">
+            <td   >
+                <br />
+                <b> Address : </b> 
+                <br />
+                <span id="contractAddress"></span>
+                <br />
+                <br />
+                <b> Total amount of ETH :</b>  <span id="contractBalanceETH"></span>
+                <br />
+                <b> Total supply of coins :</b>  <span id="totalSupplyCoin"></span>
+                <br />
+                <b> Total number of shares :</b>  <span id="totalSupplyShares"></span>
+                <br />
+                <br />
+                <b> Price ETH :</b>  <span id="priceETHCHF"></span>
+                <br />
+                <b> Price CHF :</b>  <span id="priceCHFETH"></span>
+                <br />
+                <b> Price BCHF :</b>  <span id="priceBCHF"></span>
+            </td> 
+            <td>
+                <br />
+                <b> Address:</b>
+                <br />
+                <span id="currentAccount"></span>
+                <br />
+                <br />
+                <b> Balance: </b> 
+                <br />
+                <span id="balanceETH"></span>
+                <br />
+                <span id="balanceBCHF"></span>
+                <br />
+                <span id="balanceBCHFShares"></span>
+                <br />
+                <br />
+                <b> Owner:</b>  <span id="owner"></span>
+                <br />
+                <b> Minter:</b>  <span id="minter"></span>
+                <br />
+                <b> Burner:</b>  <span id="burner"></span>
+                <br />
+                
+                
+            </td> 
+            <td>
+                <br />
+                <b>Buy shares & 10 coins pro share</b>
+                <br />
+                <br />
+                Number of shares: <input type="text" id="numberOfShares" name="numberOfShares" ></input>
+                <button onclick="buyShares()">Buy</button>
+                <span id="actionErrors"></span>
+                <br />
+                <br />
+                <br />
+                <b>Update account</b>
+                <br />
+                <br />
+                New account address: <input type="text" id="currentAccountInput" name="currentAccountInput" ></input>
+                <button onclick="updateAddress()">Update</button>
+                <br />
+                Available accounts:
+                <br />    
+                <span id="accounts"></span>
+            </td>
+        </tr>
+    </table>   
+    
 </body>
 </html>

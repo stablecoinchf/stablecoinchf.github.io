@@ -11,13 +11,15 @@
 
         var account, sc ;
 
-        window.addEventListener('load', function () {
+        window.addEventListener('load', () => {
         // Wait for loading completion to avoid race conditions with web3 injection timing.    
 		if (window.ethereum) {
+            console.log('window.ethereum detected.');
 			window.web3 = new Web3(window.ethereum);
             try {
             // Request account access if needed
-            await window.ethereum.enable();
+            // await window.ethereum.enable();
+            window.ethereum.enable();
             } catch (error) {
                 console.error(error);
             }

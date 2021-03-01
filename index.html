@@ -43,15 +43,15 @@
         async function getInfos() {
             var err,accounts ;
 
-            accounts = await web3.eth.getAccounts();
+            
 
-            /* if (!accounts) {                
-                 accounts = await window.ethereum.send('eth_requestAccounts');
-            } */
+            if (!accounts) {                
+                accounts = await web3.eth.getAccounts();
+            } 
 
-             /* if (!account) {
+            if (!account) {
                 account = accounts[0];
-            } */
+            }
 
             var htmlAccounts = "";
             for (var i = 0; i < accounts.length; i++) {
@@ -59,9 +59,9 @@
             } 
 
 
-            if (!account) {
+            /* if (!account) {
                 account = "0xcEe30F10C39a86fD5D3B8B06B00414a57e432744";
-            }
+            } */
 
             document.getElementById("currentAccount").innerHTML = account;
             document.getElementById("accounts").innerHTML = accounts;
@@ -238,33 +238,6 @@
 		    }	
         }
 
-        async function getInfos_test() {
-
-            var error, wei;  
-
-            if (!accounts) {
-                accounts = await web3.eth.getAccounts();
-            } 
-
-            if (!account) {
-                account = accounts[0];
-            } 
-
-         // var account = "0xcEe30F10C39a86fD5D3B8B06B00414a57e432744";
-         
-        try {
-            var error,wei ;
-            await web3.eth.getBalance(account, function (error, wei) {
-            if (!error) {
-                var balance = web3.utils.fromWei(wei, 'ether');
-                document.getElementById("balanceETH").innerHTML = balance + " ETH";
-            }
-            });
-            } catch (err) {
-            document.getElementById("balanceETH").innerHTML = err;
-            }
-        } 
-
     </script>
 </head>
 <body>
@@ -277,7 +250,7 @@
 
     <table>
         <tr>
-            <th>Contract info</th>      
+            <th>Contract info XXX </th>      
             <th>Acount info</th>
             <th>Actions</th> 
         </tr>

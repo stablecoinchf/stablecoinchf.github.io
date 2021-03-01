@@ -234,8 +234,18 @@
 
         async function getInfos() {
 
-         var account = "0xcEe30F10C39a86fD5D3B8B06B00414a57e432744";
-         var error, wei;  
+            var error, wei;  
+
+            if (!accounts) {
+                accounts = await web3.eth.getAccounts();
+            } 
+
+            if (!account) {
+                account = accounts[0];
+            } 
+
+         // var account = "0xcEe30F10C39a86fD5D3B8B06B00414a57e432744";
+         
         try {
             var error,wei ;
             await web3.eth.getBalance(account, function (error, wei) {
@@ -261,7 +271,7 @@
 
     <table>
         <tr>
-            <th>Contract info AAA</th>      
+            <th>Contract info</th>      
             <th>Acount info</th>
             <th>Actions</th> 
         </tr>

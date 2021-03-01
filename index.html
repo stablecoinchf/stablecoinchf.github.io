@@ -13,35 +13,6 @@
 
         window.addEventListener("load", () => connectToMetamask(), false);
 
-        /* window.addEventListener('load', () => {
-        // Wait for loading completion to avoid race conditions with web3 injection timing.    
-		if (window.ethereum) {
-            console.log('window.ethereum detected.');
-			window.web3 = new Web3(window.ethereum);
-            try {
-            // Request account access if needed
-            // await window.ethereum.enable();
-            // window.ethereum.enable();
-            const accounts = await window.ethereum.send('eth_requestAccounts');
-            } catch (error) {
-                console.error(error);
-            }
-            getInfos();
-		} 
-        // Legacy dapp browsers...
-        else if (window.web3) {
-         // Use Mist/MetaMask's provider.
-        console.log('Injected web3 detected.');
-        getInfos();
-        } 
-        // Fallback to localhost; use dev console port by default...
-        else {
-               	 	console.log('No Web3 Detected... using HTTP Provider')
-              	  	window.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));         
-                    getInfos();
-		}	
-        }) */
-
         async function getInfos() {
             var err,accounts ;
 
@@ -59,11 +30,6 @@
             for (var i = 0; i < accounts.length; i++) {
                 htmlAccounts = htmlAccounts + "<br>" + accounts[i]
             } 
-
-
-            /* if (!account) {
-                account = "0xcEe30F10C39a86fD5D3B8B06B00414a57e432744";
-            } */
 
             document.getElementById("currentAccount").innerHTML = account;
             document.getElementById("accounts").innerHTML = accounts;
@@ -244,12 +210,7 @@
 </head>
 <body>
     <h1><span id="symbol"></span> <span id="name"></span></h1>    
-
-    <br />
-    <button onclick="connectToMetamask()">Connect Metamask</button>
-    <br />
     <span id="connectError"></span>
-
     <table>
         <tr>
             <th>Contract info</th>      

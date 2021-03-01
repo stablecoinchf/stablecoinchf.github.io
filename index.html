@@ -43,18 +43,18 @@
         async function getInfos() {
             var err,accounts ;
 
-            /* if (!accounts) {
-                accounts = await web3.eth.getAccounts();
+            if (!accounts) {                
+                 accounts = await window.ethereum.send('eth_requestAccounts');
             } 
 
-            if (!account) {
+             /* if (!account) {
                 account = accounts[0];
-            }
+            } */
 
             var htmlAccounts = "";
             for (var i = 0; i < accounts.length; i++) {
                 htmlAccounts = htmlAccounts + "<br>" + accounts[i]
-            } */
+            } 
 
 
             if (!account) {
@@ -62,7 +62,7 @@
             }
 
             document.getElementById("currentAccount").innerHTML = account;
-            // document.getElementById("accounts").innerHTML = htmlAccounts;
+            document.getElementById("accounts").innerHTML = htmlAccounts;
             document.getElementById("contractAddress").innerHTML = contractAddress;
 
             document.getElementById("totalSupplyCoin").innerHTML = totalSupplyCoin + " BCHF";
@@ -275,7 +275,7 @@
 
     <table>
         <tr>
-            <th>Contract info</th>      
+            <th>Contract info SSSS</th>      
             <th>Acount info</th>
             <th>Actions</th> 
         </tr>

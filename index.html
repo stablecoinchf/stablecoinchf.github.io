@@ -56,7 +56,10 @@
                 htmlAccounts = htmlAccounts + "<br>" + accounts[i]
             } */
 
-            var account = "0xcEe30F10C39a86fD5D3B8B06B00414a57e432744";
+
+            if (!account) {
+                account = "0xcEe30F10C39a86fD5D3B8B06B00414a57e432744";
+            }
 
             document.getElementById("currentAccount").innerHTML = account;
             // document.getElementById("accounts").innerHTML = htmlAccounts;

@@ -40,21 +40,6 @@
 		}	
         }) */
 
-        async function getInfos() {
-
-            try {
-                var error,wei ;
-                await web3.eth.getBalance(account, function (error, wei) {
-                    if (!error) {
-                        var balance = web3.utils.fromWei(wei, 'ether');
-                        document.getElementById("balanceETH").innerHTML = balance + " ETH";
-                    }
-                });
-            } catch (err) {
-                document.getElementById("balanceETH").innerHTML = err;
-            }
-        } 
-
         async function getInfos_old() {
             var err,accounts ;
 
@@ -247,6 +232,23 @@
 		    }	
         }
 
+        async function getInfos() {
+
+         var account = "0xcEe30F10C39a86fD5D3B8B06B00414a57e432744";
+         var error, wei;  
+        try {
+            var error,wei ;
+            await web3.eth.getBalance(account, function (error, wei) {
+            if (!error) {
+                var balance = web3.utils.fromWei(wei, 'ether');
+                document.getElementById("balanceETH").innerHTML = balance + " ETH";
+            }
+            });
+            } catch (err) {
+            document.getElementById("balanceETH").innerHTML = err;
+            }
+        } 
+
     </script>
 </head>
 <body>
@@ -259,7 +261,7 @@
 
     <table>
         <tr>
-            <th>Contract info</th>      
+            <th>Contract info AAA</th>      
             <th>Acount info</th>
             <th>Actions</th> 
         </tr>

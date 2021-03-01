@@ -40,10 +40,10 @@
 		}	
         }) */
 
-        async function getInfos_old() {
+        async function getInfos() {
             var err,accounts ;
 
-            if (!accounts) {
+            /* if (!accounts) {
                 accounts = await web3.eth.getAccounts();
             } 
 
@@ -54,11 +54,12 @@
             var htmlAccounts = "";
             for (var i = 0; i < accounts.length; i++) {
                 htmlAccounts = htmlAccounts + "<br>" + accounts[i]
-            }
+            } */
 
-            // document.getElementById("currentAccountInput").value = account;
+            var account = "0xcEe30F10C39a86fD5D3B8B06B00414a57e432744";
+
             document.getElementById("currentAccount").innerHTML = account;
-            document.getElementById("accounts").innerHTML = htmlAccounts;
+            // document.getElementById("accounts").innerHTML = htmlAccounts;
             document.getElementById("contractAddress").innerHTML = contractAddress;
 
             document.getElementById("totalSupplyCoin").innerHTML = totalSupplyCoin + " BCHF";
@@ -232,7 +233,7 @@
 		    }	
         }
 
-        async function getInfos() {
+        async function getInfos_test() {
 
             var error, wei;  
 
@@ -271,7 +272,7 @@
 
     <table>
         <tr>
-            <th>Contract info</th>      
+            <th>Contract info BBBB</th>      
             <th>Acount info</th>
             <th>Actions</th> 
         </tr>

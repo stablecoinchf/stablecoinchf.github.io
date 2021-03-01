@@ -11,7 +11,7 @@
 
         var account, sc ;
 
-        window.addEventListener('load', () => {
+        /* window.addEventListener('load', () => {
         // Wait for loading completion to avoid race conditions with web3 injection timing.    
 		if (window.ethereum) {
             console.log('window.ethereum detected.');
@@ -19,7 +19,8 @@
             try {
             // Request account access if needed
             // await window.ethereum.enable();
-            window.ethereum.enable();
+            // window.ethereum.enable();
+            const accounts = await window.ethereum.send('eth_requestAccounts');
             } catch (error) {
                 console.error(error);
             }
@@ -37,9 +38,24 @@
               	  	window.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));         
                     getInfos();
 		}	
-        })
+        }) */
 
         async function getInfos() {
+
+            try {
+                var error,wei ;
+                await web3.eth.getBalance(account, function (error, wei) {
+                    if (!error) {
+                        var balance = web3.utils.fromWei(wei, 'ether');
+                        document.getElementById("balanceETH").innerHTML = balance + " ETH";
+                    }
+                });
+            } catch (err) {
+                document.getElementById("balanceETH").innerHTML = err;
+            }
+        } 
+
+        async function getInfos_old() {
             var err,accounts ;
 
             if (!accounts) {
@@ -202,10 +218,44 @@
             getInfos();
         }
 
+        async function connectToMetamask() {
+            // Wait for loading completion to avoid race conditions with web3 injection timing.    
+		    if (window.ethereum) {
+                console.log('window.ethereum detected.');
+			    window.web3 = new Web3(window.ethereum);
+                try {
+                // Request account access if needed
+                await window.ethereum.enable();
+                // window.ethereum.enable();
+                // const accounts = await window.ethereum.send('eth_requestAccounts');
+                } catch (error) {
+                    document.getElementById("connectError").innerHTML = error;
+                }
+                getInfos();
+		    } 
+            // Legacy dapp browsers...
+            else if (window.web3) {
+            // Use Mist/MetaMask's provider.
+            console.log('Injected web3 detected.');
+            getInfos();
+            } 
+            // Fallback to localhost; use dev console port by default...
+            else {
+               	 	console.log('No Web3 Detected... using HTTP Provider')
+              	  	window.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));         
+                    getInfos();
+		    }	
+        }
+
     </script>
 </head>
 <body>
     <h1><span id="symbol"></span> <span id="name"></span></h1>    
+
+    <br />
+    <button onclick="connectToMetamask()">Connect Metamask</button>
+    <br />
+    <span id="connectError"></span>
 
     <table>
         <tr>

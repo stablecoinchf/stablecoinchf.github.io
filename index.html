@@ -736,8 +736,15 @@
         }
 
         async function refresh() { 
+            var myBar = document.getElementById("myBar");
+            var myProgress = document.getElementById("myProgress");
+            myBar.style.width = "10%";
+            myBar.style.visibility = "visible";
+            myProgress.style.visibility = "visible";
+            myBar.style.width = "30%";
             try {
                 await sc.methods.refresh().send({ from: account, gas: 3000000});
+                myBar.style.width = "60%";
                 getInfos();
 			} catch (err) {
 				document.getElementById("symbol").innerHTML = err;
@@ -791,6 +798,7 @@
             <td></td>
             <td >
                 <div id="myProgress" style="visibility:hidden">
+                    Please do wait, it may take some time...
                     <div id="myBar" name="myBar" style="visibility:hidden" ></div>
                   </div>
             </td>

@@ -8,6 +8,20 @@
         }
     </style-->
 
+    <style>
+        #myProgress {
+          width: 100%; 
+          background-color: #ddd;
+        }
+        
+        #myBar {
+          width: 10%;
+          height: 30px;
+          background-color: #65677E;
+        }
+        </style>
+    <body>
+
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="main.css">
     <script type="text/javascript" src="./web3.min.js"></script>
@@ -31,6 +45,11 @@
             document.getElementById("errorsSellCoins").innerHTML = "";
             document.getElementById("errorsBuyCoins").innerHTML = "";
             document.getElementById("errorsExecuteBonds").innerHTML = "";
+
+            var myBar = document.getElementById("myBar");
+            var myProgress = document.getElementById("myProgress");
+
+            myBar.style.width = "70%";
 
             if (!accounts) {                
                 accounts = await web3.eth.getAccounts();
@@ -154,6 +173,8 @@
                 document.getElementById("totalSupplyShares").innerHTML = err;
             }
 
+            myBar.style.width = "80%";
+
             /* try { 
 			     var dividendsDistribution = await dc.methods.amountETH().call();
                  dividendsDistribution = web3.utils.fromWei(dividendsDistribution, 'ether');
@@ -224,7 +245,7 @@
 			    var balanceBitCHFShares = web3ShareAmountAccount;
                 balanceBitCHFShares = web3.utils.fromWei(balanceBitCHFShares, 'ether');
                 balanceBitCHFShares = Math.round(balanceBitCHFShares*100)/100;
-                document.getElementById("balanceBCHFShares").innerHTML = balanceBitCHFShares + " " + web3ScSymbol +"S";
+                document.getElementById("balanceBCHFShares").innerHTML = balanceBitCHFShares;
             } catch (err) {
                 document.getElementById("balanceBCHFShares").innerHTML = err;
             } 
@@ -329,6 +350,8 @@
                 document.getElementById("numberOfBonds").disabled = true;
                 document.getElementById("errorsBuyBonds").innerHTML = "<i><br/>Contract is not selling bonds</i>";
             }
+
+            myBar.style.width = "90%";
 
             var targetPrice = 10000000000;
             if (web3ScPrice > targetPrice)  {
@@ -452,6 +475,8 @@
             dividendsRestTime = Math.round((dividendsRestTime / 86400)*100)/100;
             /* document.getElementById("dividendsDistributionRestTime").innerHTML = dividendsRestTime + " days"; */
 
+            myBar.style.width = "100%"; 
+
             if (!isDcActive==true) {
                 document.getElementById("btnGetDividend").disabled = true;
                 document.getElementById("errorsDividend").innerHTML = "<i>Contract is currently not distributing dividends</i>";
@@ -479,6 +504,10 @@
                     document.getElementById("errorsDividend").innerHTML = "<i>Contract is distributing <b>" + dividendsETH+" ETH</b> in form of dividends within next <b>"+dividendsRestTime+"</b> days, but you are not a shareholder.</i>";
                 }
             } 
+
+
+            myBar.style.visibility = "hidden";
+            myProgress.style.visibility = "hidden";
         }
 
 
@@ -488,6 +517,13 @@
         }
 
         async function buyShares() {
+
+            var myBar = document.getElementById("myBar");
+            var myProgress = document.getElementById("myProgress");
+            myBar.style.width = "10%";
+            myBar.style.visibility = "visible";
+            myProgress.style.visibility = "visible";
+
 
             document.getElementById("errorsBuyShares").innerHTML = "";
 
@@ -501,14 +537,21 @@
             if (!sc) {
                 sc = await new web3.eth.Contract(contractAbi, contractAddress);
             }
+
+            myBar.style.width = "20%";
             
             var priceCHFETH = await sc.methods.getPrice_CHF_ETH().call();
+            myBar.style.width = "30%";
+
             var priceICO = await sc.methods.icoPrice().call();
+            myBar.style.width = "40%";
+
             var sharePriceCHF = ((priceICO / 100000000) / 100) * 10;
             var transactionPrice = (priceCHFETH * sharePriceCHF * noOfShares) * 10000000000;
             try {
                 noOfShares = web3.utils.toWei(noOfShares, 'ether');
                 await sc.methods.buyShare(noOfShares).send({ from: account, gas: 3000000, value: transactionPrice});
+                myBar.style.width = "60%";
                 getInfos();
 			} catch (err) {
 				document.getElementById("errorsBuyShares").innerHTML = err;
@@ -516,6 +559,14 @@
         }
 
         async function buyCoins() { 
+
+            var myBar = document.getElementById("myBar");
+            var myProgress = document.getElementById("myProgress");
+            myBar.style.width = "10%";
+            myBar.style.visibility = "visible";
+            myProgress.style.visibility = "visible";
+
+
             document.getElementById("errorsBuyCoins").innerHTML = "";
 
             var noOfCoins = document.getElementById("numberOfCoins").value;
@@ -529,44 +580,74 @@
                 sc = await new web3.eth.Contract(contractAbi, contractAddress);
             }
             
+            myBar.style.width = "20%"; 
+
             var priceCHFETH = await sc.methods.getPrice_CHF_ETH().call();
+            myBar.style.width = "30%";
+
             var maxPrice = await sc.methods.maxPrice().call();
+            myBar.style.width = "40%";
+
             var coinPriceCHF = (maxPrice / 100000000) / 100;
             var transactionPrice = (priceCHFETH * coinPriceCHF * noOfCoins) * 10000000000;
+
+            
+
             try {
                 noOfCoins = web3.utils.toWei(noOfCoins, 'ether');
                 await sc.methods.buyCoin(noOfCoins).send({ from: account, gas: 3000000, value: transactionPrice});
                 // document.getElementById("errorsBuyCoins").innerHTML = noOfCoins;
+                myBar.style.width = "60%";
                 getInfos();
 			} catch (err) {
 				document.getElementById("errorsBuyCoins").innerHTML = err;
 			}
+
+
         }
 
         async function sellCoins() { 
+
+            var myBar = document.getElementById("myBar");
+            var myProgress = document.getElementById("myProgress");
+            myBar.style.width = "10%";
+            myBar.style.visibility = "visible";
+            myProgress.style.visibility = "visible";
+
             document.getElementById("errorsSellCoins").innerHTML = "";
 
             var noOfCoins = document.getElementById("numberOfCoinsSell").value;
-
             if (noOfCoins <= 0) {
                 document.getElementById("errorsSellCoins").innerHTML = "Incorrect number of coins!";
                 return;
             }
 
+            myBar.style.width = "20%";
             if (!sc) {
                 sc = await new web3.eth.Contract(contractAbi, contractAddress);
             }
-           
+            
+            myBar.style.width = "30%";
             try {
                 noOfCoins = web3.utils.toWei(noOfCoins, 'ether');
                 await sc.methods.sellCoin(noOfCoins).send({ from: account, gas: 3000000});
+                myBar.style.width = "60%";
                 getInfos();
 			} catch (err) {
 				document.getElementById("errorsSellCoins").innerHTML = err; 
 			}
+
+            
         }
 
         async function buyBonds() { 
+
+            var myBar = document.getElementById("myBar");
+            var myProgress = document.getElementById("myProgress");
+            myBar.style.width = "10%";
+            myBar.style.visibility = "visible";
+            myProgress.style.visibility = "visible";
+
             document.getElementById("errorsBuyBonds").innerHTML = "";
 
             var noOfBonds = document.getElementById("numberOfBonds").value;
@@ -576,14 +657,19 @@
                 return;
             }
 
+            myBar.style.width = "20%";
+
             if (!sc) {
                 sc = await new web3.eth.Contract(contractAbi, contractAddress);
             }
+
+            myBar.style.width = "30%";
             
 
             try {
                 noOfBonds = web3.utils.toWei(noOfBonds, 'ether');
                 await sc.methods.buyBond(noOfBonds).send({ from: account, gas: 3000000});
+                myBar.style.width = "60%";
                 getInfos();
 			} catch (err) {
 				document.getElementById("errorsBuyBonds").innerHTML = err;
@@ -593,13 +679,22 @@
 
 
         async function executeBonds() { 
+
+            var myBar = document.getElementById("myBar");
+            var myProgress = document.getElementById("myProgress");
+            myBar.style.width = "10%";
+            myBar.style.visibility = "visible";
+            myProgress.style.visibility = "visible";
+            myBar.style.width = "20%";
             document.getElementById("errorsExecuteBonds").innerHTML = "";
             if (!sc) {
                 sc = await new web3.eth.Contract(contractAbi, contractAddress);
             }
+            myBar.style.width = "30%";
             try {
                 var bondConversionFee = await sc.methods.getBondConversionFee(account).call();
                 await sc.methods.convertBond().send({ from: account, gas: 3000000, value: bondConversionFee});
+                myBar.style.width = "60%";
                 getInfos();
 			} catch (err) {
 				document.getElementById("errorsExecuteBonds").innerHTML = err;
@@ -608,13 +703,23 @@
         }
 
         async function getDividend() { 
+
+            var myBar = document.getElementById("myBar");
+            var myProgress = document.getElementById("myProgress");
+            myBar.style.width = "10%";
+            myBar.style.visibility = "visible";
+            myProgress.style.visibility = "visible";
+
+            myBar.style.width = "20%";
             document.getElementById("errorsDividend").innerHTML = "";
             if (!sc) {
                 sc = await new web3.eth.Contract(contractAbi, contractAddress);
             }
+            myBar.style.width = "30%";
             try {
                 var dividendFee = await sc.methods.getDividendFee(account).call();
                 await sc.methods.getDividend().send({ from: account, gas: 3000000, value: dividendFee});
+                myBar.style.width = "60%";
                 getInfos();
 			} catch (err) {
 				document.getElementById("errorsDividend").innerHTML = err;
@@ -680,7 +785,17 @@
     <h5 style="text-align:center" ><span id="symbol"></span> current price : <span  id="priceBCHF"></span> (of CHF), min Price: <span id="minPrice"></span>, max Price: <span id="maxPrice"></span>, ico Price: <span id="icoPrice"></span></h5>
     <h6 style="text-align:center" ><button onclick="refresh()">Refresh</button></h6>
     <span id="connectError"></span>
+
     <table>
+        <tr>    
+            <td></td>
+            <td >
+                <div id="myProgress" style="visibility:hidden">
+                    <div id="myBar" name="myBar" style="visibility:hidden" ></div>
+                  </div>
+            </td>
+            <td></td>
+        </tr>
         <tr>
             <td colspan="3">
                 <hr>

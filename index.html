@@ -779,7 +779,10 @@
             // Fallback to localhost; use dev console port by default...
             else {
                	 	console.log('No Web3 Detected... using HTTP Provider')
-              	  	window.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));         
+              	  	window.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545")); 
+                    document.getElementById("connectError").innerHTML = 
+                    "<br/><p style='color:tomato;''>Install <a href=https://metamask.io>Metamask</a> plug-in for your browser, create <a href=https://metamask.io>Metamask</a> wallet</p>"
+                    + "<p style='color:tomato;''>and get some <a href=https://faucet.rinkeby.io>Ether</a> for a <a href=https://faucet.rinkeby.io>Rinkeby</a> test blockchain if you want to this dApp.</p>"    
                     getInfos();
 		    }	
         }
@@ -791,9 +794,12 @@
     <h3 style="text-align:center"  >Blockchain environment: Test (Ethereum Rinkeby) </span></h1>
     <h5 style="text-align:center" ><span id="symbol"></span> current price : <span  id="priceBCHF"></span> (of CHF), min Price: <span id="minPrice"></span>, max Price: <span id="maxPrice"></span>, ico Price: <span id="icoPrice"></span></h5>
     <h6 style="text-align:center" ><button onclick="refresh()">Refresh</button></h6>
-    <span id="connectError"></span>
-
     <table>
+        <tr>    
+            <td colspan="3" align="center" >
+                <span  id="connectError"></span>
+            </td>
+        </tr>
         <tr>    
             <td></td>
             <td >

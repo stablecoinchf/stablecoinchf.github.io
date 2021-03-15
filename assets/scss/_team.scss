@@ -1,0 +1,86 @@
+/*===========================
+    09.Team css 
+===========================*/
+.single-team {
+    .team-img {
+        padding-right: 24px;
+        position: relative;
+        z-index: 1;
+        @include transition(.3s);
+
+        @media #{$sm} {
+            padding-right: 50px;
+        }
+
+        img {
+            border-radius: 10px 10px 10px 0px;
+            box-shadow: 0 0 23px rgba(171, 177, 232, .13);
+            width: 100%;
+        }
+
+        .team-info {
+            position: absolute;
+            width: 100%;
+            bottom: -90px;
+            z-index: -1;
+            background: $white;
+            padding: 165px 30px 20px;
+            box-shadow: 0 0 23px rgba(171, 177, 232, .13);
+            border-radius: 10px;
+
+            h5 {
+                font-weight: 500;
+                margin-bottom: 5px;
+            }
+
+            span {
+                font-size: 16px;
+
+            }
+        }
+
+        .team-social-links {
+            position: absolute;
+            width: calc(100% - 24px);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            border-radius: 10px 10px 10px 0;
+            background: rgba($theme-color, .3);
+            @include transition(.3s);
+
+            ul {
+                li {
+                    display: inline-block;
+
+                    a {
+                        width: 35px;
+                        height: 35px;
+                        line-height: 35px;
+                        text-align: center;
+                        background: $theme-color;
+                        color: $white;
+                        border-radius: 3px;
+                        margin: 0 4px;
+                    }
+                }
+            }
+        }
+
+    }
+    &:hover {
+
+        .team-social-links {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+}
+
+

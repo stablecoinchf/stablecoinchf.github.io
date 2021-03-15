@@ -1,0 +1,109 @@
+/*===========================
+    03.Hero-section CSS
+===========================*/
+.hero-section {
+    background-image: linear-gradient(#365ae1 0%, #244ae2 4.66%, #1029a6 76.69%, #1029a6 100%);
+    padding-top: 100px;
+    padding-bottom: 80px;
+    position: relative;
+    z-index: 1;
+
+    @media #{$laptop} {
+        padding-top: 220px;
+        padding-bottom: 180px;
+    }
+    @media #{$lg} {
+        padding-top: 210px;
+        padding-bottom: 180px;
+    }
+    @media #{$md} {
+        padding-top: 210px;
+        padding-bottom: 130px;
+    }
+    @media #{$xs} {
+        padding-top: 150px;
+        padding-bottom: 130px;
+    }
+
+    .hero-content-wrapper {
+
+        h1 {
+            line-height: 82px;
+            font-weight: 700;
+            margin-bottom: 15px;
+
+            @media #{$laptop} {
+                line-height: 70px;
+            }
+            @media #{$lg} {
+                line-height: 55px;
+                font-size: 39px;
+            }
+            @media #{$md} {
+                line-height: 65px;
+            }
+            @media #{$sm} {
+                line-height: 65px;
+                font-size: 45px;
+            }
+            @media #{$xs} {
+                line-height: 50px;
+                font-size: 36px;
+            }
+        }
+
+        p {
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+    }
+
+    .hero-img {
+        img {
+
+            @media #{$laptop} {
+                width: 110%;
+            }
+            @media #{$lg} {
+                width: 120%;
+            }
+            @media #{$md} {
+                width: 100%;
+            }
+            @media #{$xs} {
+                width: 100%;
+            }
+        }
+
+        @media #{$md} {
+            margin-top: 50px;
+        }
+        @media #{$xs} {
+            margin-top: 50px;
+        }
+    }
+
+    .shapes {
+        .shape {
+            position: absolute;
+            width: 970px;
+            height: 540px;
+            background: rgba($white, .05);
+            border-radius: 73px;
+            z-index: -1;
+            transform: rotate(-26deg);
+        }
+        .shape-1 {
+            top: -344px;
+            left: -124px;
+        }
+        .shape-2 {
+            bottom: 0;
+            left: -224px;
+        }
+        .shape-3 {
+            top: -393px;
+            left: 540px;
+        }
+    }
+}

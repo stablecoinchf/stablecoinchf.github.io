@@ -1,0 +1,111 @@
+// countdown-section css
+
+.countdown-section {
+    position: relative;
+
+    .countdown-img {
+        margin-left: -120px;
+
+        @media #{$lg} {
+            margin-left: 0px;
+            margin-bottom: 30px;
+        }
+        @media #{$md} {
+            margin-left: 0px;
+            margin-bottom: 30px;
+        }
+        @media #{$xs} {
+            margin-left: 0px;
+            margin-bottom: 30px;
+        }
+
+        img {
+
+            @media #{$lg} {
+                width: 100%;
+            }
+            @media #{$md} {
+                width: 100%;
+            }
+            @media #{$xs} {
+                width: 100%;
+            }
+        }
+    }
+
+    ul#countdown-example {
+        margin-bottom: 50px;
+
+        li {
+            display: inline-block;
+            margin: 0;
+            margin-right: 50px;
+            text-align: center;
+
+            @media #{$xs} {
+                margin-right: 15px;
+            }
+            @media #{$sm} {
+                margin-right: 25px;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            span {
+                font-size: 45px;
+                font-weight: 600;
+                color: $white;
+                line-height: 1.5;
+                display: block;
+
+                @media #{$xs} {
+                    font-size: 25px;
+                }
+                @media #{$sm} {
+                    font-size: 35px;
+                }
+            }
+
+            p {
+                font-size: 20px;
+                font-weight: 500;
+                color: $white;
+                margin-bottom: 0;
+
+                @media #{$xs} {
+                    font-size: 15px;
+                }
+                @media #{$sm} {
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+
+    .countdown-content {
+
+        h2 {
+            @media #{$lg} {
+                font-size: 38px;
+            }
+            @media #{$sm} {
+                font-size: 35px;
+            }
+        }
+        p {
+            padding-right: 20px;
+
+            @media #{$lg} {
+                padding-right: 0;
+            }
+            @media #{$md} {
+                padding-right: 0;
+            }
+            @media #{$xs} {
+                padding-right: 0;
+            }
+        }
+    }
+}

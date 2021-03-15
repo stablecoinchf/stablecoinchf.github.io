@@ -1,0 +1,59 @@
+/*===========================
+    04.Feature css 
+===========================*/
+
+.features-wrapper {
+    background-image: linear-gradient(#365ae1 0%, #244ae2 22.16%, #1029a6 76.69%, #1029a6 100%);
+    padding: 60px 50px 20px;
+    border-radius: 27px;
+
+    @media #{$lg} {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    @media #{$md} {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    @media #{$xs} {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    @media #{$sm} {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .single-feature {
+
+        .feature-content {
+
+            h5 {
+                font-size: 25px;
+                margin-bottom: 20px;
+                color: $white;
+
+                @media #{$lg} {
+                    font-size: 22px;
+                }
+            }
+
+            p {
+                color: $white;
+                font-size: 16px;
+                line-height: 26px;
+                margin-bottom: 0;
+
+                @media #{$lg} {
+                    font-size: 14px;
+                    line-height: 22px;
+                }
+            }
+        }
+    }
+}
+
+
+
+
+

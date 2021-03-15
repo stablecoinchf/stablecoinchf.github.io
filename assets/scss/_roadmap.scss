@@ -1,0 +1,111 @@
+
+
+// road-map section 
+
+.roadmap-section {
+    .roadmap-wrapper {
+        display: flex;
+        align-items: center;
+        margin-left: -15px;
+        margin-right: -15px;
+
+        @media #{$md} {
+            flex-wrap: wrap;
+        }
+        @media #{$xs} {
+            flex-wrap: wrap;
+        }
+
+        .roadmap-item {
+            width: calc(20% - 30px);
+            margin-left: 15px;
+            margin-right: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+
+            @media #{$lg} {
+                width: calc(20% - 6px);
+                margin-left: 3px;
+                margin-right: 3px;
+            }
+            @media #{$md} {
+                width: calc(33.33% - 30px);
+                margin-bottom: 45px;
+            }
+            @media #{$xs} {
+                width: calc(100% - 30px);
+                margin-bottom: 45px;
+            }
+            @media #{$sm} {
+                width: calc(50% - 30px);
+            }
+
+            &::before {
+                content: '';
+                position: absolute;
+                background: #fff;
+                left: -15px;
+                top: 0px;
+                width: calc(50% + 2px);
+                height: 2px;
+            }
+            &::after {
+                content: '';
+                position: absolute;
+                background: #fff;
+                right: -15px;
+                top: 0px;
+                width: calc(50% + 3px);
+                height: 2px;
+            }
+
+            .circle {
+                position: relative;
+                width: 13px;
+                height: 13px;
+                border-radius: 50%;
+                background: $white;
+                margin: -6px auto 35px auto;
+                @include transition(.3s);
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    width: 25px;
+                    height: 25px;
+                    border-radius: 50%;
+                    border: 2px solid $white;
+                    top: -6px;
+                    left: -6px;
+                }
+            }
+            &:hover {
+                .circle {
+                    background: $theme-color-2;
+                }
+            }
+
+            span {
+                color: $white;
+                font-size: 18px;
+                font-weight: 500;
+                display: block;
+                margin-bottom: 5px;
+
+                @media #{$lg} {
+                    font-size: 16px;
+                }
+            }
+            p {
+                color: $white;
+                font-size: 16px;
+                line-height: 24px;
+
+                @media #{$lg} {
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}

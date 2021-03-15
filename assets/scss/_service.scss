@@ -1,0 +1,31 @@
+.service-section {
+
+    .single-service {
+        padding: 48px 30px;
+        @include transition(.3s);
+
+        &:hover {
+            background: $white;
+            box-shadow: 0 0 41px rgba(242, 245, 255, .47);
+            border-radius: 10px;
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            border-radius: 10px;
+            background: $theme-color;
+            color: $white;
+            @include box-shadow(5px 5px 0 rgba($theme-color, .2));
+        }
+
+        h4 {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+    }
+}

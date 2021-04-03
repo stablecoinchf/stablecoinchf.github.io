@@ -775,10 +775,10 @@
 
             try {
                 noOfCoins = web3.utils.toWei(noOfCoins, 'ether');
-                var transferFee = await sc.methods.getTransferFee(noOfCoins).call();       
+                //var transferFee = await sc.methods.getTransferFee(noOfCoins).call();       
                 myBar.style.width = "40%";          
-                await sc.methods.transfer(recipient,noOfCoins).send({ from: account, gas: 3000000, value: transferFee});
-                // document.getElementById("errorsTransferCoins").innerHTML = recipient;
+                //await sc.methods.transfer(recipient,noOfCoins).send({ from: account, gas: 3000000, value: transferFee});
+                await sc.methods.transfer(recipient,noOfCoins).send({ from: account, gas: 3000000});
                 myBar.style.width = "60%";
                 getInfos();
             } catch (err) {
@@ -844,7 +844,7 @@
 
         async function updateTransferFee() { 
 
-            var web3PriceETHCHF = await sc.methods.getPrice_ETH_CHF().call();
+            /* var web3PriceETHCHF = await sc.methods.getPrice_ETH_CHF().call();
 
             var numberOfCoins =document.getElementById("numberOfCoinsTransfer").value;    
             numberOfCoins = web3.utils.toWei(numberOfCoins, 'ether');        
@@ -854,7 +854,7 @@
             var transferFeeCHF = Math.round(transferFee * web3PriceETHCHF / 1000000) / 100;
             transferFee = Math.round(transferFee * 100000000) / 100000000;
             document.getElementById("errorsTransferCoins").innerHTML = "<i>Mining fee: <b>" + transferFeeCHF + " CHF</b> (" + transferFee +" ETH) </i>";    
-            
+            */
         }
 
     </script>

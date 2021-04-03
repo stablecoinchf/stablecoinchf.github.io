@@ -41,7 +41,7 @@
 	
     <script type="text/javascript">
 
-        var account, sc , bc, dc;
+        var account, sc , bc, dc, recipient;
 
         window.addEventListener("load", () => connectToMetamask(), false);
 
@@ -54,7 +54,8 @@
             document.getElementById("errorsSellCoins").innerHTML = "";
             document.getElementById("errorsBuyCoins").innerHTML = "";
             document.getElementById("errorsExecuteBonds").innerHTML = "";
-
+            document.getElementById("errorsTransferCoins").innerHTML = "";
+            
             var myBar = document.getElementById("myBar");
             var myProgress = document.getElementById("myProgress");
 
@@ -66,11 +67,13 @@
 
             if (!account) {
                 account = accounts[0];
-            }
+            }            
 
+            if (!recipient) {
+                recipient = account;
+            } 
 
-            var htmlAccountsListBox = "<SELECT onChange=updateAddress() name='listaccounts' id='listaccounts'>";
-
+            var htmlAccountsListBox = "<SELECT onChange=updateAddress() name='listaccounts' id='listaccounts'>";             
             var htmlAccounts = "";
             for (var i = 0; i < accounts.length; i++) {
                 htmlAccounts = htmlAccounts + "<br>" + accounts[i];
@@ -78,13 +81,23 @@
                     htmlAccountsListBox = htmlAccountsListBox + "<option selected value='"+accounts[i]+"''>"+ accounts[i] +"</option>";
                 } else {
                     htmlAccountsListBox = htmlAccountsListBox + "<option value='"+accounts[i]+"''>"+ accounts[i] +"</option>";
-                }
-                
-                
+                }                                
             } 
-
             htmlAccountsListBox = htmlAccountsListBox + "</SELECT>";
 
+            var htmRecipientsListBox = "<SELECT onChange=updateRecipient() name='recipientaccounts' id='recipientaccounts'>" ;     
+            var htmlRecipients = "";
+            for (var i = 0; i < accounts.length; i++) {
+                htmlRecipients = htmlRecipients + "<br>" + accounts[i];      
+                if (recipient == accounts[i]) {
+                    htmRecipientsListBox = htmRecipientsListBox + "<option selected value='"+accounts[i]+"''>"+ accounts[i] +"</option>";
+                } else {
+                    htmRecipientsListBox = htmRecipientsListBox + "<option value='"+accounts[i]+"''>"+ accounts[i] +"</option>";
+                }                                 
+            } 
+            htmRecipientsListBox = htmRecipientsListBox + "</SELECT>";      
+                        
+            document.getElementById("recipient").innerHTML = htmRecipientsListBox;
             document.getElementById("currentAccount").innerHTML = htmlAccountsListBox;
             document.getElementById("contractAddress").innerHTML = contractAddress;
             document.getElementById("contractAddress").href = "https://rinkeby.etherscan.io/address/" + contractAddress;
@@ -501,7 +514,7 @@
                         var dividendFee = await sc.methods.getDividendFee(account).call();
                         dividendFee = web3.utils.fromWei(dividendFee, 'ether');
                         var dividendFeeCHF = Math.round(dividendFee * web3PriceETHCHF / 1000000) / 100;
-                        dividendFee = Math.round(dividendFee * 10000000) / 100000000;
+                        dividendFee = Math.round(dividendFee * 100000000) / 100000000;
                         document.getElementById("errorsDividend").innerHTML = "<i>Mining fee: <b>" + dividendFeeCHF + " CHF</b> (" + dividendFee +" ETH) </i>";    
                         document.getElementById("btnGetDividend").disabled = false;
                     } else {
@@ -523,7 +536,11 @@
         function updateAddress() {
             account = document.getElementById("listaccounts").value;
             getInfos();
-        }
+        }        
+
+        function updateRecipient() {
+            recipient = document.getElementById("recipientaccounts").value;            
+        }        
 
         async function buyShares() {
 
@@ -736,6 +753,56 @@
 
         }
 
+        async function transferCoins() { 
+
+            var myBar = document.getElementById("myBar");
+            var myProgress = document.getElementById("myProgress");
+            myBar.style.width = "10%";
+            myBar.style.visibility = "visible";
+            myProgress.style.visibility = "visible";
+
+
+            document.getElementById("errorsTransferCoins").innerHTML = "";
+
+            var noOfCoins = document.getElementById("numberOfCoinsTransfer").value;
+
+            if (noOfCoins <= 0) {
+                document.getElementById("errorsTransferCoins").innerHTML = "Incorrect number of coins!";
+                myBar.style.width = "100%";
+                myBar.style.visibility = "hidden";
+                myProgress.style.visibility = "hidden";
+                return;
+            }
+
+            if (!sc) {
+                sc = await new web3.eth.Contract(contractAbi, contractAddress);
+            }
+
+            myBar.style.width = "20%";             
+
+            if (recipient==account) {
+                document.getElementById("errorsTransferCoins").innerHTML ="Recipient muss be different than the current Account!";
+                myBar.style.width = "100%";
+                myBar.style.visibility = "hidden";
+                myProgress.style.visibility = "hidden";
+                return;
+            }
+            
+            myBar.style.width = "30%";           
+
+            try {
+                noOfCoins = web3.utils.toWei(noOfCoins, 'ether');
+                var transferFee = await sc.methods.getTransferFee(noOfCoins).call();       
+                myBar.style.width = "40%";          
+                await sc.methods.transfer(recipient,noOfCoins).send({ from: account, gas: 3000000, value: transferFee});
+                // document.getElementById("errorsTransferCoins").innerHTML = recipient;
+                myBar.style.width = "60%";
+                getInfos();
+            } catch (err) {
+                document.getElementById("errorsTransferCoins").innerHTML = err;
+            }
+        }
+
         async function buySharesTransactionPrice() {
             var noOfShares = document.getElementById("numberOfShares").value;
             var priceCHFETH = await sc.methods.getPrice_CHF_ETH().call();
@@ -759,10 +826,6 @@
 				document.getElementById("symbol").innerHTML = err;
 			}
         }
-
-        
-
-
 
         async function connectToMetamask() {
             // Wait for loading completion to avoid race conditions with web3 injection timing.    
@@ -794,6 +857,21 @@
                     + "<p style='color:tomato;''>and get some <a href=https://faucet.rinkeby.io>Ether</a> for a <a href=https://faucet.rinkeby.io>Rinkeby</a> test blockchain if you want to this dApp.</p>"    
                     getInfos();
 		    }	
+        }
+
+        async function updateTransferFee() { 
+
+            var web3PriceETHCHF = await sc.methods.getPrice_ETH_CHF().call();
+
+            var numberOfCoins =document.getElementById("numberOfCoinsTransfer").value;    
+            numberOfCoins = web3.utils.toWei(numberOfCoins, 'ether');        
+            var transferFee = await sc.methods.getTransferFee(numberOfCoins).call();
+
+            transferFee = web3.utils.fromWei(transferFee, 'ether');
+            var transferFeeCHF = Math.round(transferFee * web3PriceETHCHF / 1000000) / 100;
+            transferFee = Math.round(transferFee * 100000000) / 100000000;
+            document.getElementById("errorsTransferCoins").innerHTML = "<i>Mining fee: <b>" + transferFeeCHF + " CHF</b> (" + transferFee +" ETH) </i>";    
+            
         }
 
     </script>
@@ -831,7 +909,7 @@
         </tr>
         <tr valign="top" >
             <td>
-                <b>Acount :</b> <span id="currentAccount"></span>
+                <b>Account :</b> <span id="currentAccount"></span>
                 <br />
                 <br />
                 <b> Owner:</b>  <span id="owner"></span> 
@@ -842,7 +920,7 @@
                 <br />
                 <b> Amount of shares :</b> <span id="balanceBCHFShares"></span>
                 <br />
-                <b> Amount of bonds :</b> <span id="balanceBCHFBonds"></span>
+                <b> Amount of bonds :</b> <span id="balanceBCHFBonds"></span>                
             </td> 
             <td >
                 <b>Contract :</b> <a id="contractAddress"></a> </span>
@@ -862,6 +940,18 @@
             <td>
                 <div id="piechart"></div>
             </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <hr>
+            </td>
+        </tr>
+        <tr valign="top" >
+            <td colspan="3" > 
+                <b> Transfer :</b><br/>               
+                Number of coins: <input type="number" id="numberOfCoinsTransfer" name="numberOfCoinsTransfer" onchange="updateTransferFee()" ></input> Recipient :<span id="recipient"></span> <button onclick="transferCoins()">Transfer</button>
+                </br><span id="errorsTransferCoins"></span>
+            </td>             
         </tr>
         <tr>
             <td colspan="3">
@@ -981,7 +1071,7 @@
                                 <a target="_blank" href="https://github.com/stablecoinchf/stablecoinchf.github.io/wiki/System-Documentation">Documentation</a>
                             </li>
                             <li>
-                                <a target="_blank" href="https://rinkeby.etherscan.io/address/0x0A127925F6aBCe1F7effC08c143c4c084e880Fc9">Etherscan</a>
+                                <a target="_blank" href="https://rinkeby.etherscan.io/address/0x82388e6313EC92a309bf1e93340D7b400A4e7E40">Etherscan</a>
                             </li>
                             <li>
                                 <a target="_blank" href="https://github.com/stablecoinchf">Development</a>

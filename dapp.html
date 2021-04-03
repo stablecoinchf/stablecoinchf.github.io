@@ -41,7 +41,7 @@
 	
     <script type="text/javascript">
 
-        var account, sc , bc, dc, recipient;
+        var account, sc , bc, dc;
 
         window.addEventListener("load", () => connectToMetamask(), false);
 
@@ -68,10 +68,7 @@
             if (!account) {
                 account = accounts[0];
             }            
-
-            if (!recipient) {
-                recipient = account;
-            } 
+           
 
             var htmlAccountsListBox = "<SELECT onChange=updateAddress() name='listaccounts' id='listaccounts'>";             
             var htmlAccounts = "";
@@ -84,20 +81,7 @@
                 }                                
             } 
             htmlAccountsListBox = htmlAccountsListBox + "</SELECT>";
-
-            var htmRecipientsListBox = "<SELECT onChange=updateRecipient() name='recipientaccounts' id='recipientaccounts'>" ;     
-            var htmlRecipients = "";
-            for (var i = 0; i < accounts.length; i++) {
-                htmlRecipients = htmlRecipients + "<br>" + accounts[i];      
-                if (recipient == accounts[i]) {
-                    htmRecipientsListBox = htmRecipientsListBox + "<option selected value='"+accounts[i]+"''>"+ accounts[i] +"</option>";
-                } else {
-                    htmRecipientsListBox = htmRecipientsListBox + "<option value='"+accounts[i]+"''>"+ accounts[i] +"</option>";
-                }                                 
-            } 
-            htmRecipientsListBox = htmRecipientsListBox + "</SELECT>";      
-                        
-            document.getElementById("recipient").innerHTML = htmRecipientsListBox;
+                                                
             document.getElementById("currentAccount").innerHTML = htmlAccountsListBox;
             document.getElementById("contractAddress").innerHTML = contractAddress;
             document.getElementById("contractAddress").href = "https://rinkeby.etherscan.io/address/" + contractAddress;
@@ -538,10 +522,7 @@
             getInfos();
         }        
 
-        function updateRecipient() {
-            recipient = document.getElementById("recipientaccounts").value;            
-        }        
-
+  
         async function buyShares() {
 
             var myBar = document.getElementById("myBar");
@@ -778,7 +759,9 @@
                 sc = await new web3.eth.Contract(contractAbi, contractAddress);
             }
 
-            myBar.style.width = "20%";             
+            myBar.style.width = "20%";     
+            
+            var recipient = document.getElementById("recipient").value;
 
             if (recipient==account) {
                 document.getElementById("errorsTransferCoins").innerHTML ="Recipient muss be different than the current Account!";
@@ -949,7 +932,7 @@
         <tr valign="top" >
             <td colspan="3" > 
                 <b> Transfer :</b><br/>               
-                Number of coins: <input type="number" id="numberOfCoinsTransfer" name="numberOfCoinsTransfer" onchange="updateTransferFee()" ></input> Recipient :<span id="recipient"></span> <button onclick="transferCoins()">Transfer</button>
+                Number of coins: <input type="number" id="numberOfCoinsTransfer" name="numberOfCoinsTransfer" onchange="updateTransferFee()" ></input> Recipient :<input type="text" id="recipient" name="recipient" size=50></input> <button onclick="transferCoins()">Transfer</button>
                 </br><span id="errorsTransferCoins"></span>
             </td>             
         </tr>

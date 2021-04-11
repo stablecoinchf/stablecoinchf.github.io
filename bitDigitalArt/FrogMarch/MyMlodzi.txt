@@ -1,6 +1,6 @@
 {
 "name": "Frog March : My Młodzi kochamy wolność",
-"image": "tbd",
+"image": "https://stablecoinchf.github.io/bitDigitalArt/FrogMarch/ForgMarch.JPG",
 "description": "The hit 'My Młodzi kochamy wolność' of the band 'Frog March' has been registered in 1991 in the Secondary School LO in Piła in Poland. No other records of the song has ever been recorded. Members of the band: Słoń - vocal, Krojec - guitar, Sene - drums, Ryba - bass guitar",
 "external_url": "https://www.youtube.com/watch?v=D3Ls4mb8rMc",
 "youtube_url": "https://www.youtube.com/watch?v=D3Ls4mb8rMc"

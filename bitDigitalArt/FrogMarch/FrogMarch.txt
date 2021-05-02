@@ -1,0 +1,5 @@
+{
+"name": "Frog March",
+"image": "https://stablecoinchf.github.io/bitDigitalArt/FrogMarch/ForgMarch.JPG",
+"description": "The band was formed in the secondary school (LO Pila) in a polish country Pila. It played from 1991 till 1993 mostly on local festivals and school events. It left no serious recordings, gained however a local popularity. Members of the band: Słoń - vocal, Krojec - guitar, Sene - drums, Ryba - bass guitar, vocals"
+}

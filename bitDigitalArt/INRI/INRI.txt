@@ -1,5 +1,5 @@
 {
 "name": "INRI",
-"image": "https://stablecoinchf.github.io/bitDigitalArt/FrogMarch/INRI.JPG",
+"image": "https://stablecoinchf.github.io/bitDigitalArt/INRI/INRI.JPG",
 "description": "The band was formed in the polish country Pila by Ryba and Dyrektor in 1992. It played till 2018 on various local and internatinal festivals and concerts. It left 4 studio and 1 concert album. Members of the band: Dyrektor - guitar, Ryba - bass guitar & vocal, Igor - vocal, Leon - drums, Waldek - guitar, Szkodnik - bass guitar, Longin - bass guitar, Małpa - bass guitar"
 }

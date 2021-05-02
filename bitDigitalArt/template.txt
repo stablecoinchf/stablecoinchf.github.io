@@ -3,5 +3,6 @@
 "image": "tbd",
 "description": "tbd",
 "external_url": "tbd",
-"youtube_url": "tbd"
+"youtube_url": "tbd",
+"artist_json": "tbd"
 }

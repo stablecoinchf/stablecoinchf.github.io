@@ -1,6 +1,6 @@
 {
 "name": "Frog March : Córka Wojtyły",
-"image": "https://stablecoinchf.github.io/bitDigitalArt/FrogMarch/INRI.JPG",
+"image": "https://stablecoinchf.github.io/bitDigitalArt/INRI/INRI.JPG",
 "description": "The hit 'Córka Wojtyły of the band 'INRI' from the second plate 'Futur'. It has been registered in 1993 in a recording studio in Hanover and was played on various alternative radio stations. On the recording: Ryba - bass guitar & vocal, Dyrektor - guitar, Leon -drums, Waldek - guitar. Author of music and lyrics - Ryba.",
 "external_url": "https://www.youtube.com/watch?v=xwJWo2cWG5c",
 "youtube_url": "https://www.youtube.com/embed/xwJWo2cWG5c"
